@@ -1,5 +1,7 @@
+#!/usr/bin/python
 import sys, csv
 import os
+import psycopg2
 
 def intChecker(inputString):
     if inputString.startswith('-') and inputString[1:].isdigit():
@@ -19,7 +21,7 @@ def floatChecker(inputString):
         return True
 
 
-def createTable(directory):
+def createTable(directory, filename):
     with open(directory, "r") as myFile:
         myTempList = (myFile.readline()).split(",")
         secondLine = (myFile.readline().split(","))
@@ -36,7 +38,7 @@ def createTable(directory):
             else:
                 typesList.append("VARCHAR(30)")
 
-        sqlString = "CREATE TABLE DAYV2PUB(" + "\n"
+        sqlString = "CREATE TABLE " + filename + "(" + "\n"
         for attribute, type in zip(myList[:-1], typesList[:-1]):
             sqlString += "\t" + attribute + " " + type + "," + "\n"
         sqlString += "\t" + myList[-1] + " " + typesList[-1] + "\n"
@@ -44,6 +46,9 @@ def createTable(directory):
         return sqlString
 
 def main():
+    conn = psycopg2.connect(database="hw", user="", password="")
+    print("database connected succcessfully")
+    curr = conn.cursor()
     try:
         directory = sys.argv[1]
     except:
@@ -56,8 +61,11 @@ def main():
             fileList.append(filename)
 
     for file in fileList:
-        print(createTable(os.path.join(directory, file)))
+        curr.execute(createTable(os.path.join(directory, file), file.split(".")[0]))
+        print("table created successfully")
 
+    conn.commit()
+    conn.close()
 
         # CREATE TABLE
 main()
