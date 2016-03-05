@@ -46,7 +46,8 @@ def createTable(directory, filename):
         return sqlString
 
 def main():
-    conn = psycopg2.connect(database="hw", user="", password="")
+    USER = os.environ['USER']
+    conn = psycopg2.connect(database="postgres", user=USER)
     print("database connected succcessfully")
     curr = conn.cursor()
     try:
