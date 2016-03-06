@@ -2,24 +2,7 @@
 import sys, csv
 import os
 import psycopg2
-
-def intChecker(inputString):
-    if inputString.startswith('-') and inputString[1:].isdigit():
-        return True
-    elif inputString.isdigit():
-        return True
-    return False
-
-def floatChecker(inputString):
-    try:
-        myValue = float(inputString)
-    except ValueError:
-        return False
-    if myValue.is_integer():
-        return False
-    else:
-        return True
-
+from tableUtilities import intChecker, floatChecker
 
 def createTable(directory, filename):
     with open(directory, "r") as myFile:
@@ -47,6 +30,7 @@ def createTable(directory, filename):
 
 def main():
     USER = os.environ['USER']
+    HOST = os.path.join('home',USER,'postgres')
     conn = psycopg2.connect(database="postgres", user=USER)
     print("database connected succcessfully")
     curr = conn.cursor()
@@ -61,8 +45,8 @@ def main():
         if filename[-3:] == "CSV":
             fileList.append(filename)
 
-    for file in fileList:
-        curr.execute(createTable(os.path.join(directory, file), file.split(".")[0]))
+    for filename in fileList:
+        curr.execute(createTable(os.path.join(directory, filename), filename.split(".")[0]))
         print("table created successfully")
 
     conn.commit()
