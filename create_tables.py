@@ -28,11 +28,14 @@ def createTable(directory, filename):
         sqlString += ");"
         return sqlString
 
+# def printTable(directory, filename):
+#     with open(directory, "r") as myFile:
+#         for line in myFile:
+#             print(line)
 def main():
     USER = os.environ['USER']
     HOST = os.path.join('home',USER,'postgres')
     conn = psycopg2.connect(database="postgres", user=USER)
-    print("database connected succcessfully")
     curr = conn.cursor()
     try:
         directory = sys.argv[1]
@@ -45,10 +48,13 @@ def main():
         if filename[-3:] == "CSV":
             fileList.append(filename)
 
-    for filename in fileList:
-        curr.execute(createTable(os.path.join(directory, filename), filename.split(".")[0]))
-        print("table created successfully")
+    # #this creates our initial table before we make any manual edits
+    # for filename in fileList:
+    #     #curr.execute(createTable(os.path.join(directory, filename), filename.split(".")[0]))
+    #     print(createTable(os.path.join(directory, filename), filename.split(".")[0]))
 
+    sqlTable = open("sqlTables", "r")
+    curr.execute(sqlTable.read())
     conn.commit()
     conn.close()
 
