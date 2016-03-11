@@ -81,18 +81,20 @@ def main():
 
 	fileList = []
 	for filename in os.listdir(directory):
-	    if filename[-3:].lower() == "CSV":
+	    if filename[-3:].lower() == "csv":
 	        fileList.append(filename)
+	      	print(filename)
 
-
+	for filename in fileList:
+		insertTable(os.path.join(directory, filename), filename.split(".")[0], curr)
 
 	#insertTable(os.path.join(directory, 'DAYV2PUB.CSV'), 'DAYV2PUB', curr)
 	#insertTable(os.path.join(directory, 'HHV2PUB.CSV'), 'HHV2PUB', curr)
 	#insertTable(os.path.join(directory, 'VEHV2PUB.CSV'), 'VEHV2PUB', curr)
 	#insertTable(os.path.join(directory, 'PERV2PUB.CSV'), 'PERV2PUB', curr)
-	insertTable(os.path.join(directory, 'EIA_CO2_Electricity_2015.csv'), 'EIA_CO2_Electricity_2015', curr)
-	insertTable(os.path.join(directory, 'EIA_CO2_Transportation_2015.csv'), 'EIA_CO2_Transportation_2015', curr)
-	insertTable(os.path.join(directory, 'EIA_MkWh_2015.csv'), 'EIA_MkWh_2015', curr)
+	# insertTable(os.path.join(directory, 'EIA_CO2_Electricity_2015.csv'), 'EIA_CO2_Electricity_2015', curr)
+	# insertTable(os.path.join(directory, 'EIA_CO2_Transportation_2015.csv'), 'EIA_CO2_Transportation_2015', curr)
+	# insertTable(os.path.join(directory, 'EIA_MkWh_2015.csv'), 'EIA_MkWh_2015', curr)
 	conn.commit()
 	conn.close()
 	print("--- %s seconds ---" % (time.time() - start_time))

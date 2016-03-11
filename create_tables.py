@@ -53,8 +53,8 @@ def main():
     # #     #curr.execute(createTable(os.path.join(directory, filename), filename.split(".")[0]))
     #     print(createTable(os.path.join(directory, filename), filename.split(".")[0]))
 
-    # sqlTable = open("nhtsTables", "r")
-    # curr.execute(sqlTable.read())
+    sqlTable = open("nhtsTables", "r")
+    curr.execute(sqlTable.read())
     sqlTable2 = open("eiaTables", "r")
     curr.execute(sqlTable2.read())
     
