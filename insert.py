@@ -36,6 +36,7 @@ def insertTable(filePath, filename):
 				#print(sqlString)
 				print()
 				curr.execute(sqlString)
+				conn.commit()
 				break
 			elif i == 1000:
 				if(charChecker(valList[-1])): # account for last value 
@@ -43,6 +44,7 @@ def insertTable(filePath, filename):
 				else:
 					sqlString += valList[-1].strip() + ");" + "\n"
 				curr.execute(sqlString)
+				conn.commit()
 				#print(sqlString)
 				sqlString = ""
 				sqlString = "INSERT INTO " + filename
@@ -50,9 +52,9 @@ def insertTable(filePath, filename):
 				i = 0 #reset
 			else:
 				if(charChecker(valList[-1])): # account for last value 
-					sqlString += "'" + valList[-1].strip() + "'" + ")," + "\n"
+					sqlString += "'" + valList[-1].strip() + "'" + ");" + "\n"
 				else:
-					sqlString += valList[-1].strip() + ")," + "\n"
+					sqlString += valList[-1].strip() + ");" + "\n"
 
 			i+=1
 			j+=1
@@ -70,11 +72,17 @@ def main():
 	    if filename[-3:] == "CSV":
 	        fileList.append(filename)
 	#j = 0
-	for filename in fileList:
-		#print(insertTable(os.path.join(directory, filename), filename.split(".")[0]))
-		#print(j)
-		insertTable(os.path.join(directory, filename), filename.split(".")[0])
-		print("Banana")
+	# for filename in fileList:
+	# 	#print(insertTable(os.path.join(directory, filename), filename.split(".")[0]))
+	# 	#print(j)
+	# 	insertTable(os.path.join(directory, filename), filename.split(".")[0])
+	# 	print("Banana")
+
+
+	# insertTable(os.path.join(directory, 'DAYV2PUB.CSV'), 'DAYV2PUB')
+	insertTable(os.path.join(directory, 'HHV2PUB.CSV'), 'HHV2PUB')
+	# insertTable(os.path.join(directory, 'VEHV2PUB.CSV'), 'VEHV2PUB')
+	# insertTable(os.path.join(directory, 'PERV2PUB.CSV'), 'PERV2PUB')
 		#j+=1
 	conn.commit()
 
