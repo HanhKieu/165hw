@@ -18,6 +18,8 @@ def insertTable(filePath, filename):
 		length = len(myFileCopy.readlines())
 		lines = myFileCopy.readlines()
 		for line in myFile.readlines(): # reads starting from second line
+			i+=1
+			j+=1
 			sqlString += "("
 			valList = line.split(",")
 			for val in valList[:-1]:
@@ -27,6 +29,7 @@ def insertTable(filePath, filename):
 					sqlString += "'" + val + "'" + ","
 				else:
 					sqlString += val + ", "
+
 			if j == (length - 1):
 				if(charChecker(valList[-1])): # account for last value 
 					sqlString += "'" + valList[-1].strip() + "'" + ");" + "\n"
@@ -34,17 +37,16 @@ def insertTable(filePath, filename):
 					sqlString += valList[-1].strip() + ");" + "\n"
 				#print(sqlString)
 				#print(sqlString)
-				print()
+				# print("bananajlkjl")
 				curr.execute(sqlString)
-				conn.commit()
 				break
 			elif i == 1000:
+				# print(j)
 				if(charChecker(valList[-1])): # account for last value 
 					sqlString += "'" + valList[-1].strip() + "'" + ");" + "\n"
 				else:
 					sqlString += valList[-1].strip() + ");" + "\n"
 				curr.execute(sqlString)
-				conn.commit()
 				#print(sqlString)
 				sqlString = ""
 				sqlString = "INSERT INTO " + filename
@@ -52,12 +54,13 @@ def insertTable(filePath, filename):
 				i = 0 #reset
 			else:
 				if(charChecker(valList[-1])): # account for last value 
-					sqlString += "'" + valList[-1].strip() + "'" + ");" + "\n"
+					sqlString += "'" + valList[-1].strip() + "'" + ")," + "\n"
 				else:
-					sqlString += valList[-1].strip() + ");" + "\n"
+					sqlString += valList[-1].strip() + ")," + "\n"
 
-			i+=1
-			j+=1
+		# print("this is i:" + str(i))
+		# print("this is j:" + str(j))
+		# print("length is:" + str(length))
 		return sqlString
 
 def main():
@@ -77,10 +80,26 @@ def main():
 	# 	#print(j)
 	# 	insertTable(os.path.join(directory, filename), filename.split(".")[0])
 	# 	print("Banana")
+	# 	#j+=1
 
+	# print("length is:")
 
 	# insertTable(os.path.join(directory, 'DAYV2PUB.CSV'), 'DAYV2PUB')
-	insertTable(os.path.join(directory, 'HHV2PUB.CSV'), 'HHV2PUB')
+
+
+	# insertTable(os.path.join(directory, 'HHV2PUB.CSV'), 'HHV2PUB')
+
+	# print("length is:")
+
+	# insertTable(os.path.join(directory, 'VEHV2PUB.CSV'), 'VEHV2PUB')
+
+	# print("length is:")
+
+	# insertTable(os.path.join(directory, 'PERV2PUB.CSV'), 'PERV2PUB')
+
+
+	insertTable(os.path.join(directory, 'DAYV2PUB.CSV'), 'DAYV2PUB')
+	#insertTable(os.path.join(directory, 'HHV2PUB.CSV'), 'HHV2PUB')
 	# insertTable(os.path.join(directory, 'VEHV2PUB.CSV'), 'VEHV2PUB')
 	# insertTable(os.path.join(directory, 'PERV2PUB.CSV'), 'PERV2PUB')
 		#j+=1
