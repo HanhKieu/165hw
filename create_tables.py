@@ -45,16 +45,20 @@ def main():
 
     fileList = []
     for filename in os.listdir(directory):
-        if filename[-3:] == "CSV":
+        if filename[-3:].lower() == "csv":
             fileList.append(filename)
 
     # #this creates our initial table before we make any manual edits
     # for filename in fileList:
-    #     #curr.execute(createTable(os.path.join(directory, filename), filename.split(".")[0]))
+    # #     #curr.execute(createTable(os.path.join(directory, filename), filename.split(".")[0]))
     #     print(createTable(os.path.join(directory, filename), filename.split(".")[0]))
 
-    sqlTable = open("sqlTables", "r")
-    curr.execute(sqlTable.read())
+    # sqlTable = open("nhtsTables", "r")
+    # curr.execute(sqlTable.read())
+    sqlTable2 = open("eiaTables", "r")
+    curr.execute(sqlTable2.read())
+    
+
     conn.commit()
     conn.close()
 

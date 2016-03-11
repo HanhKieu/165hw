@@ -1,0 +1,24 @@
+CREATE TABLE EIA_CO2_Electricity_2015(
+	MSN VARCHAR(30),
+	YYYYMM INTEGER,
+	Value FLOAT,
+	Column_Order VARCHAR(30),
+	Description VARCHAR(100),
+	Unit VARCHAR(100)
+);
+CREATE TABLE EIA_CO2_Transportation_2015(
+	MSN VARCHAR(30),
+	YYYYMM INTEGER,
+	Value INTEGER,
+	Column_Order VARCHAR(30),
+	Description VARCHAR(100),
+	Unit VARCHAR(100)
+);
+CREATE TABLE EIA_MkWh_2015(
+	MSN VARCHAR(30),
+	YYYYMM INTEGER,
+	Value FLOAT,
+	Column_Order VARCHAR(30),
+	Description VARCHAR(100),
+	Unit VARCHAR(100)
+);
