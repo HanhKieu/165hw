@@ -1,2 +1,2 @@
 #!/bin/bash
-python create_tables.py /home/cjnitta/ecs165a
+python create_tables.py ../CSVFILES

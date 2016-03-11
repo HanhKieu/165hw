@@ -1,0 +1,7 @@
+
+select round (100 * (select count(trpmiles)
+from dayv2pub 
+WHERE trpmiles < 50 AND trpmiles >= 0) / (select count(trpmiles) from dayv2pub)
+) as percentage
+from dayv2pub
+group by percentage

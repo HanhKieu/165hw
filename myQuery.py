@@ -5,7 +5,21 @@ from tableUtilities import intChecker, floatChecker, charChecker
 import time
 
 def problem1a(curr):
-	print("PROBLEM 1A")
+	for i in range(5,105,5):
+		print("LESS THAN %d" % i) 
+		sqlString = """
+			select round ((select count(trpmiles)
+			from dayv2pub 
+			WHERE trpmiles < %d AND trpmiles >= 0) / (select count(trpmiles) from dayv2pub)
+			) as percentage
+			from dayv2pub
+			group by percentage
+
+			""" % i
+		curr.execute(sqlString)
+		answer = curr.fetchone()
+		print(answer[0])
+
 def problem2a(curr):
 	print("PROBLEM 2A")
 

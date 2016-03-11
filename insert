@@ -1,2 +1,2 @@
 #!/bin/bash
-python insert.py /home/cjnitta/ecs165a
+python insert.py ../CSVFILES
