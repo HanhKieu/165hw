@@ -2,6 +2,7 @@
 import sys, csv
 import os
 import psycopg2
+import 
 from tableUtilities import intChecker, floatChecker
 
 def createTable(directory, filename):
@@ -57,7 +58,6 @@ def main():
     curr.execute(sqlTable.read())
     sqlTable2 = open("eiaTables", "r")
     curr.execute(sqlTable2.read())
-    
 
     conn.commit()
     conn.close()
