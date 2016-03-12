@@ -10,15 +10,22 @@ curr = conn.cursor()
 key = int(sys.argv[1])
 #key 1111 means all answers, first is 3a
 #testttt change and lalala and hello and pp
+def monthDays(x):
+	if (x == 2):
+		return (28)
+	elif (x == 1 or x == 3 or x==5 or x== 7 or x==8 or x==10 or x==12):
+		return (31)
+	else:
+		return (30)
 
 #Q3a--------------------------------------------------------------------------------------
 if (key - 999 > 0):
+	print "\nQUESTION 3a\n"
 	sqlString = "SELECT count(*) FROM  (SELECT houseid,personid,sum(vmt_mile)FROM dayv2pub" \
 	" WHERE vmt_mile>0 GROUP BY houseid,personid UNION SELECT houseid,personid,sum(trpmiles)" \
 	" FROM dayv2pub WHERE trpmiles>0 AND trptrans>7 GROUP BY houseid,personid) AS t"
 	curr.execute(sqlString)
 	row = curr.fetchall()
-	print "\nQUESTION 3a\n"
 	for rows in row:
 	    total = int(rows[0])
 	print("Total:")
@@ -69,7 +76,8 @@ if (key % 100 > 9):
 	for i in range(200803, 200813, 1):
 		num = i
 		i = str(i)
-		sqlString = "SELECT 117538000/count(DISTINCT houseid)*sum(.000000008887*30*trpmiles/epatmpg)"\
+		month = monthDays(num - 200800)
+		sqlString = "SELECT 117538000/count(DISTINCT houseid)*sum(.000000008887*"+str(month)+"*trpmiles/epatmpg)"\
 		" AS gallons FROM (SELECT dayv2pub.houseid, trpmiles, epatmpg FROM vehv2pub,dayv2pub WHERE"\
 		" vehv2pub.houseid=dayv2pub.houseid AND vehv2pub.vehid=dayv2pub.vehid AND dayv2pub.trpmiles>0"\
 		" AND vehv2pub.vehid>0 AND dayv2pub.vehid>0 AND dayv2pub.tdaydate="
@@ -80,7 +88,7 @@ if (key % 100 > 9):
 		for rows in row:
 			   home = float(rows[0])
 
-		sql2 = "SELECT value FROM eia_co2_transportation_2014 WHERE YYYYMM = "
+		sql2 = "SELECT value FROM eia_co2_transportation_2015 WHERE YYYYMM = "
 		sql2 += i + " ORDER BY value DESC LIMIT 1;"
 		curr.execute(sql2)
 		row = curr.fetchall()
@@ -94,7 +102,8 @@ if (key % 100 > 9):
 	for i in range(200901, 200905, 1):
 		num = i
 		i = str(i)
-		sqlString = "SELECT 117538000/count(DISTINCT houseid)*sum(.000000008887*30*trpmiles/epatmpg)"\
+		month = monthDays(num - 200900)
+		sqlString = "SELECT 117538000/count(DISTINCT houseid)*sum(.000000008887*"+str(month)+"*trpmiles/epatmpg)"\
 		" AS gallons FROM (SELECT dayv2pub.houseid, trpmiles, epatmpg FROM vehv2pub,dayv2pub WHERE"\
 		" vehv2pub.houseid=dayv2pub.houseid AND vehv2pub.vehid=dayv2pub.vehid AND dayv2pub.trpmiles>0"\
 		" AND vehv2pub.vehid>0 AND dayv2pub.vehid>0 AND dayv2pub.tdaydate="
@@ -106,7 +115,7 @@ if (key % 100 > 9):
 		for rows in row:
 			home = float(rows[0])
 
-		sql2 = "SELECT value FROM eia_co2_transportation_2014 WHERE YYYYMM = "
+		sql2 = "SELECT value FROM eia_co2_transportation_2015 WHERE YYYYMM = "
 		sql2 += i + " ORDER BY value DESC LIMIT 1;"
 		#execute this and store it as total
 		#print home/total
@@ -128,10 +137,10 @@ if (key % 10 > 0):
 		for j in range(200803, 200813, 1): #
 			numj = j
 			j = str(j)
-
-			sql = "SELECT (SELECT value FROM eia_co2_electric_2014 WHERE yyyymm="
+			month = monthDays(numj - 200800)
+			sql = "SELECT (SELECT value FROM eia_co2_electricity_2015 WHERE yyyymm="
 			sql += j
-			sql += " ORDER BY value DESC LIMIT 1)/(SELECT value FROM eia_mkwh_2014 WHERE yyyymm="
+			sql += " ORDER BY value DESC LIMIT 1)/(SELECT value FROM eia_mkwh_2015 WHERE yyyymm="
 			sql += j
 			sql += " ORDER BY value DESC LIMIT 1);"
 			#result and store as ratio
@@ -157,7 +166,7 @@ if (key % 10 > 0):
 
 			lessthan = str(lessthanF)
 
-			sql = "SELECT sum(.008887*30*(trpmiles-" + i + ")/epatmpg) AS eelec FROM"\
+			sql = "SELECT sum(.008887*"+str(month)+"*(trpmiles-" + i + ")/epatmpg) AS eelec FROM"\
 			" vehv2pub,dayv2pub WHERE vehv2pub.houseid=dayv2pub.houseid AND"\
 			" vehv2pub.vehid=dayv2pub.vehid AND trpmiles>0 AND vehv2pub.vehid>0 AND"\
 			" dayv2pub.vehid>0 AND dayv2pub.tdaydate="
@@ -171,7 +180,7 @@ if (key % 10 > 0):
 
 			submorethan = str(submorethanF)
 
-			sql = "SELECT sum(.008887*30*trpmiles/epatmpg) AS eelec FROM vehv2pub,dayv2pub"\
+			sql = "SELECT sum(.008887*"+str(month)+"*trpmiles/epatmpg) AS eelec FROM vehv2pub,dayv2pub"\
 			" WHERE vehv2pub.houseid=dayv2pub.houseid AND vehv2pub.vehid=dayv2pub.vehid AND"\
 			" trpmiles>0 AND vehv2pub.vehid>0 AND dayv2pub.vehid>0 AND dayv2pub.tdaydate=" + j
 
@@ -198,7 +207,7 @@ if (key % 10 > 0):
 				neweleF = float(rows[0])
 			newele = str(neweleF)
 
-			sql = "SELECT sum(.008887*30*trpmiles/epatmpg) AS eelec FROM vehv2pub,dayv2pub"\
+			sql = "SELECT sum(.008887*"+str(month)+"*trpmiles/epatmpg) AS eelec FROM vehv2pub,dayv2pub"\
 			" WHERE vehv2pub.houseid=dayv2pub.houseid AND vehv2pub.vehid=dayv2pub.vehid AND"\
 			" trpmiles>0 AND vehv2pub.vehid>0 AND dayv2pub.vehid>0 AND dayv2pub.tdaydate="
 			sql += j + ";"
@@ -218,35 +227,35 @@ if (key % 10 > 0):
 		for j in range(200901, 200905, 1):
 			numj = j
 			j = str(j)
-
-			sql = "SELECT (SELECT value FROM eia_co2_electric_2014 WHERE yyyymm="
+			month = monthDays(numj - 200900)
+			sql = "SELECT (SELECT value FROM eia_co2_electricity_2015 WHERE yyyymm="
 			sql += j
-			sql += " ORDER BY value DESC LIMIT 1)/(SELECT value FROM eia_mkwh_2014 WHERE yyyymm="
+			sql += " ORDER BY value DESC LIMIT 1)/(SELECT value FROM eia_mkwh_2015 WHERE yyyymm="
 			sql += j
 			sql += " ORDER BY value DESC LIMIT 1);"
 			#result and store as ratio
 
-			curr.execute(sqlString)
+			curr.execute(sql)
 			row = curr.fetchall()
 			for rows in row:
 				ratio = float(rows[0])
 
 			sql += "SELECT sum(("
-			sql += ratio
+			sql += str(ratio)
 			sql += "*(trpmiles*11.03)/(epatmpg*1.0))) AS eelec FROM vehv2pub,dayv2pub WHERE"\
 			" vehv2pub.houseid=dayv2pub.houseid AND vehv2pub.vehid=dayv2pub.vehid AND trpmiles>0"\
 			" AND vehv2pub.vehid>0 AND dayv2pub.vehid>0 AND dayv2pub.tdaydate="
 			sql += j + " AND trpmiles<=" + i + ";"
 			#created a lessthan veriable from the result of this
 
-			curr.execute(sqlString)
+			curr.execute(sql)
 			row = curr.fetchall()
 			for rows in row:
 				lessthanF = float(rows[0])
 
 			lessthan = str(lessthanF)
 
-			sql = "SELECT sum(.008887*30*(trpmiles-" + i + ")/epatmpg) AS eelec FROM"\
+			sql = "SELECT sum(.008887*"+str(month)+"*(trpmiles-" + i + ")/epatmpg) AS eelec FROM"\
 			" vehv2pub,dayv2pub WHERE vehv2pub.houseid=dayv2pub.houseid AND"\
 			" vehv2pub.vehid=dayv2pub.vehid AND trpmiles>0 AND vehv2pub.vehid>0 AND"\
 			" dayv2pub.vehid>0 AND dayv2pub.tdaydate="
@@ -260,7 +269,7 @@ if (key % 10 > 0):
 
 			submorethan = str(submorethanF)
 
-			sql = "SELECT sum(.008887*30*trpmiles/epatmpg) AS eelec FROM vehv2pub,dayv2pub"\
+			sql = "SELECT sum(.008887*"+str(month)+"*trpmiles/epatmpg) AS eelec FROM vehv2pub,dayv2pub"\
 			" WHERE vehv2pub.houseid=dayv2pub.houseid AND vehv2pub.vehid=dayv2pub.vehid AND"\
 			" trpmiles>0 AND vehv2pub.vehid>0 AND dayv2pub.vehid>0 AND dayv2pub.tdaydate=" + j
 
@@ -274,7 +283,7 @@ if (key % 10 > 0):
 
 			comorethan = str(comorethanF)
 
-			sql = "SELECT sum((" + ratio + "*(" + i + "*11.03)/(epatmpg*1.0))) AS"\
+			sql = "SELECT sum((" + str(ratio) + "*(" + i + "*11.03)/(epatmpg*1.0))) AS"\
 			" eelec FROM vehv2pub,dayv2pub WHERE vehv2pub.houseid=dayv2pub.houseid AND"\
 			" vehv2pub.vehid=dayv2pub.vehid AND trpmiles>0 AND vehv2pub.vehid>0 AND"\
 			" dayv2pub.vehid>0 AND dayv2pub.tdaydate="
@@ -287,7 +296,7 @@ if (key % 10 > 0):
 				neweleF = float(rows[0])
 			newele = str(neweleF)
 
-			sql = "SELECT sum(.008887*30*trpmiles/epatmpg) AS eelec FROM vehv2pub,dayv2pub"\
+			sql = "SELECT sum(.008887*"+str(month)+"*trpmiles/epatmpg) AS eelec FROM vehv2pub,dayv2pub"\
 			" WHERE vehv2pub.houseid=dayv2pub.houseid AND vehv2pub.vehid=dayv2pub.vehid AND"\
 			" trpmiles>0 AND vehv2pub.vehid>0 AND dayv2pub.vehid>0 AND dayv2pub.tdaydate="
 			sql += j + ";"
@@ -303,4 +312,3 @@ if (key % 10 > 0):
 			change = (answer - cototal)/cototal
 
 			print("For hybrids with electric range of " + i + " in month " + str(numj - 200900) + " of year 2009, the change in CO2 emissions was: " + str(change))
-

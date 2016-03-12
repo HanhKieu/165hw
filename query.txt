@@ -1,7 +1,8 @@
+SELECT count(*) FROM  
 
-select round (100 * (select count(trpmiles)
-from dayv2pub 
-WHERE trpmiles < 50 AND trpmiles >= 0) / (select count(trpmiles) from dayv2pub)
-) as percentage
-from dayv2pub
-group by percentage
+(SELECT houseid,personid,sum(vmt_mile)
+FROM dayv2pub
+WHERE vmt_mile>0 GROUP BY houseid,personid 
+UNION 
+SELECT houseid,personid,sum(trpmiles)
+"FROM dayv2pub WHERE trpmiles>0 AND trptrans>7 GROUP BY houseid,personid) AS t
